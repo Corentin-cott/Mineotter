@@ -1,8 +1,13 @@
-config.json
-node_modules
+# dependencies
+/node_modules
+
+# production
+/build
+
 .env
-build
+
 .idea
-package-lock.json
-src/certs/.pem
-/src/certs
+
+channels.json
+
+otterlyApiRoutes.json
