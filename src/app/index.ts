@@ -5,8 +5,7 @@ const bot = new Otterbots();
 
 // Start the bot
 bot.start();
-bot.setActivity("custom", "Hello Otters !")
-bot.startOtterGuard()
+bot.setActivity("playing", "Minecraft")
 
 // Start tasks (if you not use tasks, you can delete this)
 bot.initTask()
