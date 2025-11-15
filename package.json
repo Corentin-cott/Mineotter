@@ -1,37 +1,40 @@
 {
-  "name": "arisoutre",
-  "version": "2.0.0",
-  "description": "Bot discord Antre des loutres",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "dev": "npm run build && node build/index.js",
-    "start": "node ./build/index.js"
+  "name": "otterbots",
+  "version": "1.0.0",
+  "description": "Un framework pour les bots discord de l'antre des loutres",
+  "homepage": "https://github.com/L-Antre-des-Loutres/Otterbots#readme",
+  "bugs": {
+    "url": "https://github.com/L-Antre-des-Loutres/Otterbots/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/L-Antre-des-Loutres/Arisoutre.git"
+    "url": "git+https://github.com/L-Antre-des-Loutres/Otterbots.git"
   },
-  "author": "Mathéo-1712 et Corentin-cott",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/L-Antre-des-Loutres/Arisoutre/issues"
+  "license": "MIT",
+  "author": "Antre des Loutres",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm run lint && npm run build && node ./build/app/index.js",
+    "build": "tsc",
+    "lint": "npx eslint \"src/**/*.ts\"",
+    "start": "node ./build/app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/L-Antre-des-Loutres/Arisoutre#readme",
   "dependencies": {
-    "axios": "^1.8.4",
-    "discord.js": "^14.18.0",
-    "dockerode": "^4.0.7",
-    "dotenv": "^16.4.7",
-    "mysql2": "^3.14.0",
-    "rcon-client": "^4.2.5",
-    "typescript": "^5.9.2"
+    "axios": "^1.12.2",
+    "discord.js": "^14.23.2",
+    "dotenv": "^17.2.3",
+    "figlet": "^1.9.3",
+    "node-cron": "^4.2.1",
+    "pino": "^10.1.0",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/axios": "^0.9.36",
-    "@types/dockerode": "^3.3.42",
-    "@types/dotenv": "^8.2.3",
-    "@types/node": "^22.13.13"
+    "@types/node-cron": "^3.0.11",
+    "@typescript-eslint/eslint-plugin": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.0",
+    "eslint": "^9.38.0",
+    "pino-pretty": "^13.1.2"
   }
 }
