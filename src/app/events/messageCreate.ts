@@ -1,4 +1,4 @@
-import {otterlogs} from "../../otterbots/utils/otterlogs";
+import { otterlogs } from "../../otterbots/utils/otterlogs";
 import { Message } from "discord.js";
 
 module.exports = {
@@ -12,6 +12,17 @@ module.exports = {
 
         if (message.channel.id === targetChannelId) {
             otterlogs.log(`Message from ${message.author.tag}: ${message.content}`);
+
+            /*
+            TODO : Check openned servers & get all rcon parameters with Otterbots access to Otterly API.
+             Then, send the message to all servers with the rcon command.
+              - Prevent command injections
+              - Say "Piece jointe" when a piecture, video, audio or file is sent
+              - Send "🦦" when a emoji is sent
+              - Send "🦦" when a animated emoji is sent
+
+
+            */
         }
     }
 };
