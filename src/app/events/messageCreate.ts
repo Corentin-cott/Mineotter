@@ -1,24 +1,13 @@
 import { otterlogs } from "../../otterbots/utils/otterlogs";
+import { getSalonByAlias } from "../../otterbots/utils/salon";
 import { Otterlyapi } from "../../otterbots/utils/otterlyapi/otterlyapi";
 import { rconHelper } from "../utils/rconHelpler";
 import { cleanUserMessage } from "../utils/discordMessageCleaner";
 import { RconConfig } from "../types/rconTypes";
+import { ActiveServer } from "../types/activeServeurType";
 import { Message } from "discord.js";
 
-// Interface defining the structure of the API response
-interface ServerData {
-    id: number;
-    serveurs_id: number;
-    host: string;
-    rcon_host: string;
-    rcon_port: string; // The API returns this as a string "25575"
-    rcon_password: string;
-}
-
-interface ApiResponse {
-    success: boolean;
-    data: ServerData[];
-}
+type ApiResponse = ActiveServer[];
 
 module.exports = {
     name: "messageCreate",
@@ -27,7 +16,10 @@ module.exports = {
         // Ignore bots
         if (message.author.bot) return;
 
-        const targetChannelId = ""; // TODO : Remove hardcoded ID
+        const targetChannel = getSalonByAlias("discu-mc")
+        if (!targetChannel) return;
+
+        const targetChannelId: string = targetChannel.id
 
         if (message.channel.id === targetChannelId) {
             otterlogs.debug(`Message from ${message.author.tag}: ${message.content}`);
@@ -42,15 +34,14 @@ module.exports = {
             try {
                 // GET request to the API
                 const response = await Otterlyapi.getDataByAlias<ApiResponse>('otr-serveurs-primaire-secondaire');
+                otterlogs.debug(`API Response: ${JSON.stringify(response)}`);
 
-                if (response.data && response.success && Array.isArray(response.data)) {
-                    const servers = response.data;
-
-                    // We use Promise.all to send requests to all servers in parallel
-                    await Promise.all(servers.map(async (server) => {
+                if (response && Array.isArray(response)) {
+                    // CHANGE: Iterate over 'response', not 'response.data'
+                    await Promise.all(response.map(async (server) => {
                         const rcon: RconConfig = {
                             host: server.rcon_host,
-                            port: parseInt(server.rcon_port), // Convert port to number as API sends string "25575" but Rcon usually expects number
+                            port: parseInt(server.rcon_port),
                             password: server.rcon_password,
                             timeout: 5000
                         };
@@ -64,6 +55,8 @@ module.exports = {
                             otterlogs.error(`[${server.host}] RCON Failed: ${rconError}`);
                         }
                     }));
+                } else {
+                    otterlogs.warn("API response format was invalid or empty.");
                 }
             } catch (error) {
                 otterlogs.error(`Failed to fetch servers or send messages: ${error}`);

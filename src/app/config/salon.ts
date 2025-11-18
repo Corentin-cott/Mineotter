@@ -1,6 +1,6 @@
 import {SalonCategory, SalonType} from "../../otterbots/type/salonType";
 
-const ROLE_ID = "1254833145749049385";
+const MINECRAFT_ROLE_ID = "1112714361111335032";
 
 /** With this function you can get the information of a salon in relation to its creation alias
  * ---------------------
@@ -18,8 +18,8 @@ export const salonCategory: SalonCategory[] = [
     // Here your list of categories
     {
         id: 1,
-        name: "Mineotter",
-        role_id: ROLE_ID
+        name: "Minecraft",
+        role_id: MINECRAFT_ROLE_ID
     }
 ]
 
@@ -33,19 +33,11 @@ export const salonCategory: SalonCategory[] = [
 export const botSalon: SalonType[] = [
     // Here your list of salons
     {
-        alias: "logs-global",
-        name: "🦦・logs-mineotter",
-        role_id: ROLE_ID,
+        alias: "discu-mc",
+        name: "🌌・discu-mc",
+        role_id: MINECRAFT_ROLE_ID,
         category: 1,
         type: 1,
         webhook: true
-    },
-    {
-        alias: "logs-erreur",
-        name: "❌・logs-erreur",
-        role_id: ROLE_ID,
-        category: 1,
-        type: 1,
-        webhook: true
-    },
+    }
 ];
