@@ -28,6 +28,7 @@
     "figlet": "^1.9.3",
     "node-cron": "^4.2.1",
     "pino": "^10.1.0",
+    "rcon-client": "^4.2.5",
     "typescript": "^5.9.3"
   },
   "devDependencies": {

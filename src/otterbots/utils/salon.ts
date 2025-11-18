@@ -4,15 +4,22 @@ import {botSalon, salonCategory} from "../../app/config/salon";
 import fs from "fs";
 
 /**
- * Creates a set of channels and a category with specific permissions in a Discord server.
- * Ensures the existence of a specific role and manages permissions for that role.
+ * Represents a salon with its associated details in a JSON structure.
  *
- * @param {Client} client - The Discord client used to interact with the Discord API.
- * @return {Promise<void>} A promise that resolves when all channels and roles have been successfully created or logged.
+ * The `JsonSalonType` is structured to encapsulate information about a salon,
+ * including its name, category name, unique identifier, and webhook URL for integrations.
+ *
+ * Properties:
+ * - `name`: The name of the salon.
+ * - `categoryName`: The category or classification of the salon (e.g., spa, hair salon).
+ * - `id`: A unique identifier for the salon.
+ * - `webhook`: The URL of the webhook used for sending or receiving salon data.
  */
-export type SalonType = {
+type JsonSalonType = {
     name: string;
     categoryName: string;
+    id: string;
+    webhook: string;
 }
 
 /**
@@ -24,12 +31,12 @@ export type SalonType = {
 export async function otterBots_initSalon(client: Client): Promise<void> {
     client.on('clientReady', async (): Promise<void> => {
         try {
-            const channelNames: SalonType[] = [];
+            const channelNames: JsonSalonType[] = [];
             // Names of channels to create
             for (const category of salonCategory) {
                 for (const salon of botSalon) {
                     if (salon.category === category.id && !channelNames.some(c => c.name === salon.name)) {
-                        channelNames.push({name: salon.name, categoryName: category.name});
+                        channelNames.push({id: "", webhook: "", name: salon.name, categoryName: category.name});
                     }
                 }
             }
@@ -68,7 +75,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                     });
                 }
 
-                // For each category 
+                // For each category
                 for (const category of salonCategory) {
                     // Check if category already exists
                     let categoryChannel = guild.channels.cache.find(
@@ -138,7 +145,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
                             };
 
                             // Write updated data back to channels.json
-                            await fs.writeFileSync('channels.json', JSON.stringify(channelData, null, 2));
+                            fs.writeFileSync('channels.json', JSON.stringify(channelData, null, 2));
                             otterlogs.debug("Channels updated in channels.json");
                         }
                     }
@@ -159,7 +166,7 @@ export async function otterBots_initSalon(client: Client): Promise<void> {
  * @param {string} alias - The alias identifier of the salon to look up
  * @return {Promise<string>} The channel ID if found, empty string otherwise
  */
-export function getSalonByAlias(alias: string): SalonType | void {
+export function getSalonByAlias(alias: string): JsonSalonType | void {
     try {
         const channels = JSON.parse(fs.readFileSync('channels.json', 'utf8'));
         if (channels[alias] && channels[alias].id) {
